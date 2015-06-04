@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.lamal.drawruteongooglemapontouch.jsonparser.RouteDirectionParser;
 
@@ -81,13 +82,8 @@ public class MainActivity extends FragmentActivity {
                         LatLng origin = markerPoints.get(placeCount);
                         placeCount++;
                         LatLng dest = markerPoints.get(placeCount);
- 
-                        // Getting URL to the Google Directions API
                         String url = getDirectionsUrl(origin, dest);
- 
-                        DownloadTask downloadTask = new DownloadTask();
- 
-                        // Start downloading json data from Google Directions API
+                         DownloadTask downloadTask = new DownloadTask();
                         downloadTask.execute(url);
                     }
                 }
@@ -243,7 +239,12 @@ public class MainActivity extends FragmentActivity {
             }
  
             // Drawing polyline in the Google Map for the i-th route
-            myMap.addPolyline(lineOptions);
+            try {
+				Polyline pline = myMap.addPolyline(lineOptions);
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
  
